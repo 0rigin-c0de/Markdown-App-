@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Editor from "./components/Editor";
-import { data } from "./data";
 import Split from "react-split";
 import { nanoid } from "nanoid";
+import { auth } from "./firebase";
+import firebase from "./firebase";
+import "./index.css";
 
 function App() {
   const [notes, setNotes] = useState(
@@ -12,10 +14,24 @@ function App() {
   const [currentNoteId, setCurrentNoteId] = useState(
     (notes[0] && notes[0].id) || ""
   );
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("note", JSON.stringify(notes));
   }, [notes]);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   function createNewNote() {
     const newNote = {
@@ -56,9 +72,21 @@ function App() {
     );
   }
 
+  function handleSignIn() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth
+      .signInWithPopup(provider)
+      .then((result) => { })
+      .catch((error) => { });
+  }
+
+  function handleSignOut() {
+    auth.signOut();
+  }
+
   return (
     <main>
-      {notes.length > 0 ? (
+      {user ? (
         <Split sizes={[30, 70]} direction="horizontal" className="split">
           <Sidebar
             notes={notes}
@@ -70,17 +98,21 @@ function App() {
           {currentNoteId && notes.length > 0 && (
             <Editor currentNote={findCurrentNote()} updateNote={updateNote} />
           )}
+          <button className="logout" onClick={handleSignOut}>
+            Logout
+          </button>
         </Split>
       ) : (
         <div className="no-notes">
-          <h1>You have no notes</h1>
-          <button className="first-note" onClick={createNewNote}>
-            Create one now
+          <h1 className="app-title">Notes App</h1>
+          <button className="google-login" onClick={handleSignIn}>
+            Sign in with Google
           </button>
         </div>
       )}
     </main>
   );
+
 }
 
 export default App;
