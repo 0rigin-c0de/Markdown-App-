@@ -3,56 +3,55 @@ import Sidebar from "./components/Sidebar";
 import Editor from "./components/Editor";
 import Split from "react-split";
 import { nanoid } from "nanoid";
-import { auth } from "./firebase";
+
+import { auth, database } from "./firebase";
 import firebase from "./firebase";
 import "./index.css";
 
 function App() {
-  const [notes, setNotes] = useState(
-    () => JSON.parse(localStorage.getItem("note")) || []
-  );
-  const [currentNoteId, setCurrentNoteId] = useState(
-    (notes[0] && notes[0].id) || ""
-  );
+  const [notes, setNotes] = useState([]);
+  const [currentNoteId, setCurrentNoteId] = useState("");
   const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    localStorage.setItem("note", JSON.stringify(notes));
-  }, [notes]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setUser(user);
+        const notesRef = database.ref(`notes/${user.uid}`);
+        notesRef.on("value", (snapshot) => {
+          const notesData = snapshot.val();
+          if (notesData) {
+            setNotes(Object.values(notesData));
+            setCurrentNoteId(Object.values(notesData)[0].id);
+          }
+        });
       } else {
         setUser(null);
+        setNotes([]);
+        setCurrentNoteId("");
       }
     });
     return () => {
       unsubscribe();
     };
   }, []);
-
   function createNewNote() {
     const newNote = {
       id: nanoid(),
-      body: "# Type your tittle here",
+      body: "# Type your title here",
     };
-    setNotes((prevNotes) => [newNote, ...prevNotes]);
+    const notesRef = database.ref(`notes/${user.uid}`);
+    notesRef.update({ [newNote.id]: newNote });
+    setNotes([...notes, newNote]);
     setCurrentNoteId(newNote.id);
   }
 
+
+
+
   function updateNote(text) {
-    //Set the new note on top
-    setNotes((oldNotes) => {
-      let updatedNoteArray = oldNotes.filter(function (oldNote) {
-        return oldNote.id === currentNoteId;
-      });
-      let filteredNoteArray = oldNotes.filter(function (oldNote) {
-        return oldNote.id != currentNoteId;
-      });
-      return [{ ...updatedNoteArray[0], body: text }, ...filteredNoteArray];
-    });
+    const noteRef = database.ref(`notes/${user.uid}/${currentNoteId}`);
+    noteRef.update({ body: text });
   }
 
   function findCurrentNote() {
@@ -65,23 +64,13 @@ function App() {
 
   function deleteNote(event, noteId) {
     event.stopPropagation();
-    setNotes((oldNotes) =>
-      oldNotes.filter(function (oldNote) {
-        return oldNote.id != noteId;
-      })
-    );
+    const noteRef = database.ref(`notes/${user.uid}/${noteId}`);
+    noteRef.remove();
   }
 
   function handleSignIn() {
     const provider = new firebase.auth.GoogleAuthProvider();
-    auth
-      .signInWithPopup(provider)
-      .then((result) => { })
-      .catch((error) => { });
-  }
-
-  function handleSignOut() {
-    auth.signOut();
+    auth.signInWithPopup(provider).then((result) => { }).catch((error) => { });
   }
 
   return (
@@ -98,9 +87,6 @@ function App() {
           {currentNoteId && notes.length > 0 && (
             <Editor currentNote={findCurrentNote()} updateNote={updateNote} />
           )}
-          <button className="logout" onClick={handleSignOut}>
-            Logout
-          </button>
         </Split>
       ) : (
         <div className="no-notes">
@@ -112,7 +98,6 @@ function App() {
       )}
     </main>
   );
-
 }
 
 export default App;

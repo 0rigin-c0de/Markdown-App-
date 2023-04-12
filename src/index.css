@@ -5,8 +5,10 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Karla', sans-serif;
+  font-family: "Karla", sans-serif
 }
+
+
 
 button:focus {
   outline: none;
@@ -38,23 +40,13 @@ button:focus {
   align-items: center;
 }
 
-.sidebar--header>h3 {
+.sidebar--header > h3 {
   font-size: 1.75rem;
-}
-
-.new-note {
-  cursor: pointer;
-  background-color: #4A4E74;
-  border: none;
-  color: white;
-  border-radius: 3px;
-  height: 30px;
-  width: 30px;
 }
 
 .first-note {
   cursor: pointer;
-  background-color: #4A4E74;
+  background-color: #4a4e74;
   border: none;
   color: white;
   border-radius: 3px;
@@ -95,14 +87,14 @@ button:focus {
   font-size: 0.8rem;
   font-weight: 400;
   line-height: 1.2rem;
-  color: #4A4E74;
+  color: #4a4e74;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .selected-note {
-  background-color: #4A4E74;
+  background-color: #4a4e74;
 }
 
 .selected-note .text-snippet {
@@ -118,7 +110,7 @@ button:focus {
 }
 
 .gutter.gutter-horizontal {
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
 }
 
 .gutter.gutter-horizontal:hover {
@@ -129,14 +121,13 @@ button:focus {
   display: flex;
 }
 
-
 .delete-btn {
   display: none;
   background: none;
   border: none;
 }
 
-.title:hover>.delete-btn {
+.title:hover > .delete-btn {
   display: block;
 }
 
@@ -152,13 +143,10 @@ button:focus {
   width: 10px;
   height: 12px;
   border: 2px solid transparent;
-  box-shadow:
-    0 0 0 2px,
-    inset -2px 0 0,
-    inset 2px 0 0;
+  box-shadow: 0 0 0 2px, inset -2px 0 0, inset 2px 0 0;
   border-bottom-left-radius: 1px;
   border-bottom-right-radius: 1px;
-  margin-top: 4px
+  margin-top: 4px;
 }
 
 .gg-trash::after,
@@ -166,7 +154,7 @@ button:focus {
   content: "";
   display: block;
   box-sizing: border-box;
-  position: absolute
+  position: absolute;
 }
 
 .gg-trash::after {
@@ -175,7 +163,7 @@ button:focus {
   width: 16px;
   height: 2px;
   top: -4px;
-  left: -5px
+  left: -5px;
 }
 
 .gg-trash::before {
@@ -186,7 +174,7 @@ button:focus {
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
   top: -7px;
-  left: -2px
+  left: -2px;
 }
 
 /* Add these styles to the bottom of the index.css file */
@@ -224,7 +212,7 @@ button:focus {
   .no-notes {
     padding: 2rem;
   }
-  
+
   .app-title {
     font-size: 2rem;
     margin-bottom: 1.5rem;
@@ -235,4 +223,38 @@ button:focus {
     padding: 0.8rem 1.6rem;
   }
 }
-  
+
+.new-note {
+  background: linear-gradient(to right, #4b6cb7, #182848);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  margin-left: -8rem;
+}
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+.logout {
+  background: linear-gradient(to right, #4b6cb7, #182848);
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+}
+
+.logout:hover {
+  background: linear-gradient(to right, #182848, #4b6cb7);
+}
+
+.sidebar-tittle{
+  margin-left: -4rem;
+}

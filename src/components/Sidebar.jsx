@@ -1,19 +1,18 @@
 import React from "react";
+import { auth } from "../firebase";
 
 export default function Sidebar(props) {
   const noteElements = props.notes.map((note) => {
     return (
       <div key={note.id}>
         <div
-          className={`title ${
-            note.id === props.currentNote.id ? "selected-note" : ""
-          }`}
+          className={`title ${note.id === props.currentNote?.id ? "selected-note" : ""}`}
           onClick={() => props.setCurrentNoteId(note.id)}
         >
           <h4 className="text-snippet">{note.body.split("\n")[0]}</h4>
           <button
             className="delete-btn"
-            onClick={() => props.handleDelete(event, note.id)}
+            onClick={(event) => props.handleDelete(event, note.id)}
           >
             <i className="gg-trash trash-icon"></i>
           </button>
@@ -22,13 +21,23 @@ export default function Sidebar(props) {
     );
   });
 
+  function handleSignOut() {
+    auth.signOut();
+  }
+
   return (
     <section className="pane sidebar">
       <div className="sidebar--header">
-        <h3>Notes</h3>
+        <h2 className="sidebar-tittle">Notes</h2>
         <button className="new-note" onClick={props.newNote}>
-          +
+          New
         </button>
+        <div className="user-info">
+          <img src={auth.currentUser?.photoURL} alt={auth.currentUser?.displayName} className="user-avatar" />
+          <button className="logout" onClick={handleSignOut}>
+            Logout
+          </button>
+        </div>
       </div>
       {noteElements}
     </section>
