@@ -31,7 +31,7 @@ https://github.com/0rigin-c0de/Markdown-App-.git
 
 ### Creating a Note
 
-- click on the `+` icon in the sidebar.
+- click on the `new` icon in the sidebar.
 - Type your note in the editor using Markdown syntax.
 - Click the "Preview" button to see a preview of your note.
 
