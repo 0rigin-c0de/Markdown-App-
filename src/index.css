@@ -30,9 +30,9 @@ button:focus {
   height: 100vh;
 }
 
-/* .sidebar--note {
+.sidebar--note {
   display: flex;
-} */
+}
 
 .sidebar--header {
   display: flex;
@@ -207,7 +207,6 @@ button:focus {
   background: linear-gradient(to right, #182848, #4b6cb7);
 }
 
-/* Make it responsive */
 @media (max-width: 768px) {
   .no-notes {
     padding: 2rem;
@@ -232,7 +231,7 @@ button:focus {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
-  margin-left: -8rem;
+  margin-left: -4rem;
 }
 .user-avatar {
   width: 30px;
@@ -256,5 +255,9 @@ button:focus {
 }
 
 .sidebar-tittle{
-  margin-left: -4rem;
+  margin-left: -2rem;
 }
+
+
+
+
